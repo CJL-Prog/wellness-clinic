@@ -1,5 +1,7 @@
 import { stripe } from '@/lib/stripe';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 // Pricing IDs from Stripe Dashboard
 const PRICES = {
@@ -10,17 +12,21 @@ const PRICES = {
 
 export async function POST(request: Request) {
   const { assessmentId, plan = 'comprehensive' } = await request.json();
-  const supabase = createRouteHandlerClient();
+  const supabase = createRouteHandlerClient({ cookies });
   
   // Get user
   const { data: { user } } = await supabase.auth.getUser();
   
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  
   // Create or get Stripe customer
-  let customerId = user.user_metadata.stripe_customer_id;
+  let customerId = user.user_metadata?.stripe_customer_id;
   
   if (!customerId) {
     const customer = await stripe.customers.create({
-      email: user.email,
+      email: user.email!,
       metadata: {
         supabase_uid: user.id
       }
@@ -38,7 +44,7 @@ export async function POST(request: Request) {
     customer: customerId,
     payment_method_types: ['card'],
     line_items: [{
-      price: PRICES[plan],
+      price: PRICES[plan as keyof typeof PRICES],
       quantity: 1
     }],
     mode: 'subscription',
@@ -61,5 +67,5 @@ export async function POST(request: Request) {
     }
   });
   
-  return Response.json({ url: session.url });
+  return NextResponse.json({ url: session.url });
 }

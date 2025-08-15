@@ -1,9 +1,10 @@
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
+import { NextResponse } from 'next/server';
+// import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
 
   switch (event.type) {
     case 'checkout.session.completed': {
-      const session = event.data.object;
+      const session = event.data.object as any;
       
       // 1. Get the assessment that was just paid for
       const assessmentId = session.metadata?.assessment_id;
@@ -53,22 +54,22 @@ export async function POST(request: Request) {
         });
       
       // 4. Send confirmation email
-      await resend.emails.send({
-        from: 'clinic@yourdomain.com',
-        to: session.customer_email!,
-        subject: 'Welcome! Your provider will review within 24 hours',
-        html: `
-          <h2>Your health journey starts now!</h2>
-          <p>We've received your assessment and payment.</p>
-          <p><strong>Next steps:</strong></p>
-          <ol>
-            <li>Provider reviews your assessment (24-48 hours)</li>
-            <li>If approved, medications ship immediately</li>
-            <li>You'll receive tracking information via email</li>
-          </ol>
-          <p>Questions? Reply to this email.</p>
-        `
-      });
+      // await resend.emails.send({
+      //   from: 'clinic@yourdomain.com',
+      //   to: session.customer_email!,
+      //   subject: 'Welcome! Your provider will review within 24 hours',
+      //   html: `
+      //     <h2>Your health journey starts now!</h2>
+      //     <p>We've received your assessment and payment.</p>
+      //     <p><strong>Next steps:</strong></p>
+      //     <ol>
+      //       <li>Provider reviews your assessment (24-48 hours)</li>
+      //       <li>If approved, medications ship immediately</li>
+      //       <li>You'll receive tracking information via email</li>
+      //     </ol>
+      //     <p>Questions? Reply to this email.</p>
+      //   `
+      // });
       
       // 5. Notify provider via Slack/Discord (optional but useful)
       await notifyProviders(assessmentId);
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
     
     case 'invoice.payment_failed': {
       // Handle failed recurring payments
-      const invoice = event.data.object;
+      const invoice = event.data.object as any;
       
       await supabase
         .from('subscriptions')
@@ -86,19 +87,19 @@ export async function POST(request: Request) {
         .eq('stripe_subscription_id', invoice.subscription);
         
       // Email user about failed payment
-      await resend.emails.send({
-        from: 'billing@yourdomain.com',
-        to: invoice.customer_email!,
-        subject: 'Payment failed - Action required',
-        html: `Update your payment method to continue treatment...`
-      });
+      // await resend.emails.send({
+      //   from: 'billing@yourdomain.com',
+      //   to: invoice.customer_email!,
+      //   subject: 'Payment failed - Action required',
+      //   html: `Update your payment method to continue treatment...`
+      // });
       
       break;
     }
     
     case 'customer.subscription.deleted': {
       // Handle cancellations
-      const subscription = event.data.object;
+      const subscription = event.data.object as any;
       
       await supabase
         .from('subscriptions')
@@ -118,11 +119,13 @@ export async function POST(request: Request) {
 // Helper to notify providers
 async function notifyProviders(assessmentId: string) {
   // Use Discord webhook for instant notifications
-  await fetch(process.env.DISCORD_WEBHOOK_URL!, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      content: `🚨 New assessment needs review!\nID: ${assessmentId}\nReview at: ${process.env.NEXT_PUBLIC_URL}/provider/review/${assessmentId}`
-    })
-  });
+  if (process.env.DISCORD_WEBHOOK_URL) {
+    await fetch(process.env.DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: `🚨 New assessment needs review!\nID: ${assessmentId}\nReview at: ${process.env.NEXT_PUBLIC_URL}/provider/review/${assessmentId}`
+      })
+    });
+  }
 }
