@@ -1,34 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { createSupabaseClient } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
-
-// This form is worth $399/month per completion
-const intakeSchema = z.object({
-  // Step 1: Goals
-  goals: z.array(z.string()).min(1, 'Select at least one goal'),
-  
-  // Step 2: Symptoms  
-  symptoms: z.array(z.string()),
-  
-  // Step 3: Demographics
-  email: z.string().email(),
-  phone: z.string().min(10),
-  dateOfBirth: z.string(),
-  state: z.string().length(2),
-  
-  // Step 4: Medical
-  medications: z.string(),
-  conditions: z.array(z.string()),
-  
-  // Step 5: Consent
-  consent: z.boolean().refine(val => val === true)
-});
-
-type IntakeFormData = z.infer<typeof intakeSchema>;
 
 const GOALS = [
   { id: 'weight_loss', label: 'Lose Weight', icon: '🎯', description: 'Sustainable weight loss with medical support' },
@@ -68,74 +40,55 @@ export default function IntakeForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   
-  const form = useForm<IntakeFormData>({
-    resolver: zodResolver(intakeSchema),
-    defaultValues: {
-      goals: [],
-      symptoms: [],
-      conditions: [],
-      medications: '',
-      consent: false
-    }
+  // Form state
+  const [formData, setFormData] = useState({
+    goals: [] as string[],
+    symptoms: [] as string[],
+    email: '',
+    phone: '',
+    dateOfBirth: '',
+    state: '',
+    medications: '',
+    conditions: [] as string[],
+    consent: false
   });
 
-  const onSubmit = async (data: IntakeFormData) => {
+  const updateFormData = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const toggleArrayItem = (field: 'goals' | 'symptoms' | 'conditions', item: string) => {
+    setFormData(prev => {
+      const current = prev[field];
+      if (current.includes(item)) {
+        return { ...prev, [field]: current.filter(i => i !== item) };
+      } else {
+        return { ...prev, [field]: [...current, item] };
+      }
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.consent) {
+      alert('Please agree to the terms to continue');
+      return;
+    }
+    
     setLoading(true);
     
     try {
-      const supabase = createSupabaseClient();
+      // For now, just redirect to a success page
+      // In production, this would create the user account and assessment
+      console.log('Form submitted:', formData);
       
-      // 1. Check state restrictions
-      const { data: restricted } = await supabase
-        .from('restricted_states')
-        .select('*')
-        .eq('state_code', data.state)
-        .single();
-        
-      if (restricted) {
-        // Show waitlist modal
-        alert('Service not yet available in your state. Join our waitlist!');
-        // Capture email for waitlist
-        await fetch('/api/waitlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: data.email, state: data.state })
-        });
-        return;
-      }
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // 2. Create user account
-      const { data: authData, error } = await supabase.auth.signUp({
-        email: data.email,
-        password: Math.random().toString(36).slice(-8), // Temp password
-        options: {
-          data: {
-            phone: data.phone,
-            state: data.state,
-            date_of_birth: data.dateOfBirth
-          }
-        }
-      });
-      
-      if (error) throw error;
-      
-      // 3. Save assessment
-      const { data: assessment, error: assessmentError } = await supabase
-        .from('assessments')
-        .insert({
-          user_id: authData.user?.id,
-          goals: data.goals,
-          symptoms: data.symptoms,
-          medications: data.medications,
-          medical_history: { conditions: data.conditions }
-        })
-        .select()
-        .single();
-      
-      if (assessmentError) throw assessmentError;
-      
-      // 4. Redirect to checkout
-      router.push(`/checkout?assessment=${assessment.id}`);
+      // For demo purposes, just show success
+      alert('Assessment submitted successfully! You would normally be redirected to checkout.');
+      router.push('/');
       
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -146,32 +99,22 @@ export default function IntakeForm() {
   };
 
   const nextStep = () => {
-    const currentStepFields = getStepFields(step);
-    const isValid = currentStepFields.every(field => {
-      const value = form.getValues(field as any);
-      if (Array.isArray(value)) return value.length > 0;
-      return value && value !== '';
-    });
-    
-    if (isValid) {
-      setStep(s => Math.min(5, s + 1));
-    } else {
-      alert('Please complete all required fields');
+    // Basic validation
+    if (step === 1 && formData.goals.length === 0) {
+      alert('Please select at least one goal');
+      return;
     }
+    if (step === 3) {
+      if (!formData.email || !formData.phone || !formData.dateOfBirth || !formData.state) {
+        alert('Please fill in all required fields');
+        return;
+      }
+    }
+    
+    setStep(s => Math.min(5, s + 1));
   };
 
   const prevStep = () => setStep(s => Math.max(1, s - 1));
-
-  const getStepFields = (stepNum: number) => {
-    switch(stepNum) {
-      case 1: return ['goals'];
-      case 2: return ['symptoms'];
-      case 3: return ['email', 'phone', 'dateOfBirth', 'state'];
-      case 4: return [];
-      case 5: return ['consent'];
-      default: return [];
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
@@ -190,7 +133,7 @@ export default function IntakeForm() {
           </div>
         </div>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white rounded-2xl shadow-xl p-8">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
           {/* Step 1: Goals */}
           {step === 1 && (
             <div className="space-y-6">
@@ -204,17 +147,12 @@ export default function IntakeForm() {
                   <label
                     key={goal.id}
                     className={`block p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-blue-300 ${
-                      form.watch('goals')?.includes(goal.id) 
+                      formData.goals.includes(goal.id) 
                         ? 'border-blue-500 bg-blue-50' 
                         : 'border-gray-200'
                     }`}
+                    onClick={() => toggleArrayItem('goals', goal.id)}
                   >
-                    <input
-                      type="checkbox"
-                      value={goal.id}
-                      className="sr-only"
-                      {...form.register('goals')}
-                    />
                     <div className="flex items-start gap-3">
                       <span className="text-2xl">{goal.icon}</span>
                       <div>
@@ -241,19 +179,14 @@ export default function IntakeForm() {
                   <label
                     key={symptom}
                     className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-blue-300 ${
-                      form.watch('symptoms')?.includes(symptom)
+                      formData.symptoms.includes(symptom)
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200'
                     }`}
+                    onClick={() => toggleArrayItem('symptoms', symptom)}
                   >
-                    <input
-                      type="checkbox"
-                      value={symptom}
-                      className="sr-only"
-                      {...form.register('symptoms')}
-                    />
                     <span className="flex-1">{symptom}</span>
-                    {form.watch('symptoms')?.includes(symptom) && (
+                    {formData.symptoms.includes(symptom) && (
                       <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
@@ -279,9 +212,11 @@ export default function IntakeForm() {
                   </label>
                   <input
                     type="email"
-                    {...form.register('email')}
+                    value={formData.email}
+                    onChange={(e) => updateFormData('email', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="you@example.com"
+                    required
                   />
                 </div>
                 
@@ -291,9 +226,11 @@ export default function IntakeForm() {
                   </label>
                   <input
                     type="tel"
-                    {...form.register('phone')}
+                    value={formData.phone}
+                    onChange={(e) => updateFormData('phone', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="(555) 123-4567"
+                    required
                   />
                 </div>
                 
@@ -303,8 +240,10 @@ export default function IntakeForm() {
                   </label>
                   <input
                     type="date"
-                    {...form.register('dateOfBirth')}
+                    value={formData.dateOfBirth}
+                    onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
                   />
                 </div>
                 
@@ -314,10 +253,12 @@ export default function IntakeForm() {
                   </label>
                   <input
                     type="text"
-                    {...form.register('state')}
+                    value={formData.state}
+                    onChange={(e) => updateFormData('state', e.target.value.toUpperCase())}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="CA"
                     maxLength={2}
+                    required
                   />
                 </div>
               </div>
@@ -337,7 +278,8 @@ export default function IntakeForm() {
                   Current Medications
                 </label>
                 <textarea
-                  {...form.register('medications')}
+                  value={formData.medications}
+                  onChange={(e) => updateFormData('medications', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   rows={3}
                   placeholder="List any medications you're currently taking..."
@@ -356,8 +298,8 @@ export default function IntakeForm() {
                     >
                       <input
                         type="checkbox"
-                        value={condition}
-                        {...form.register('conditions')}
+                        checked={formData.conditions.includes(condition)}
+                        onChange={() => toggleArrayItem('conditions', condition)}
                         className="mr-3"
                       />
                       <span>{condition}</span>
@@ -390,7 +332,8 @@ export default function IntakeForm() {
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
-                  {...form.register('consent')}
+                  checked={formData.consent}
+                  onChange={(e) => updateFormData('consent', e.target.checked)}
                   className="mt-1"
                 />
                 <span className="text-sm">
@@ -423,7 +366,7 @@ export default function IntakeForm() {
             ) : (
               <button
                 type="submit"
-                disabled={loading || !form.watch('consent')}
+                disabled={loading || !formData.consent}
                 className="ml-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Processing...' : 'Complete Assessment'}
