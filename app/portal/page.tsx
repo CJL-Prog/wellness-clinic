@@ -7,7 +7,6 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function PatientPortal() {
   const [activeTab, setActiveTab] = useState('overview');
-  const supabase = createClientComponentClient();
   
   return (
     <div className="min-h-screen bg-gray-50">

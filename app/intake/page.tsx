@@ -3,74 +3,39 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { supabase } from '@/lib/supabase-client';
+import { createSupabaseClient } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 
+// This form is worth $399/month per completion
 const intakeSchema = z.object({
+  // Step 1: Goals
   goals: z.array(z.string()).min(1, 'Select at least one goal'),
+  
+  // Step 2: Symptoms  
   symptoms: z.array(z.string()),
+  
+  // Step 3: Demographics
   email: z.string().email(),
   phone: z.string().min(10),
   dateOfBirth: z.string(),
   state: z.string().length(2),
+  
+  // Step 4: Medical
   medications: z.string(),
   conditions: z.array(z.string()),
+  
+  // Step 5: Consent
   consent: z.boolean().refine(val => val === true)
 });
 
 type IntakeFormData = z.infer<typeof intakeSchema>;
 
 const GOALS = [
-  { 
-    id: 'weight_loss', 
-    label: 'Lose Weight', 
-    icon: (
-      <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ), 
-    description: 'Sustainable weight loss with medical support' 
-  },
-  { 
-    id: 'energy', 
-    label: 'Boost Energy', 
-    icon: (
-      <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-    ), 
-    description: 'Combat fatigue and improve vitality' 
-  },
-  { 
-    id: 'sleep', 
-    label: 'Sleep Better', 
-    icon: (
-      <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-      </svg>
-    ), 
-    description: 'Improve sleep quality and recovery' 
-  },
-  { 
-    id: 'hormones', 
-    label: 'Balance Hormones', 
-    icon: (
-      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ), 
-    description: 'Optimize hormone levels naturally' 
-  },
-  { 
-    id: 'longevity', 
-    label: 'Improve Longevity', 
-    icon: (
-      <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-      </svg>
-    ), 
-    description: 'Anti-aging and cellular health' 
-  },
+  { id: 'weight_loss', label: 'Lose Weight', icon: '🎯', description: 'Sustainable weight loss with medical support' },
+  { id: 'energy', label: 'Boost Energy', icon: '⚡', description: 'Combat fatigue and improve vitality' },
+  { id: 'sleep', label: 'Sleep Better', icon: '😴', description: 'Improve sleep quality and recovery' },
+  { id: 'hormones', label: 'Balance Hormones', icon: '⚖️', description: 'Optimize hormone levels naturally' },
+  { id: 'longevity', label: 'Improve Longevity', icon: '🌟', description: 'Anti-aging and cellular health' },
 ];
 
 const SYMPTOMS = [
@@ -98,33 +63,6 @@ const CONDITIONS = [
   'None of the above'
 ];
 
-const US_STATES = [
-  { code: 'AL', name: 'Alabama' }, { code: 'AZ', name: 'Arizona' },
-  { code: 'AR', name: 'Arkansas' }, { code: 'CA', name: 'California' },
-  { code: 'CO', name: 'Colorado' }, { code: 'CT', name: 'Connecticut' },
-  { code: 'DE', name: 'Delaware' }, { code: 'FL', name: 'Florida' },
-  { code: 'GA', name: 'Georgia' }, { code: 'ID', name: 'Idaho' },
-  { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' },
-  { code: 'IA', name: 'Iowa' }, { code: 'KS', name: 'Kansas' },
-  { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' },
-  { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' },
-  { code: 'MA', name: 'Massachusetts' }, { code: 'MI', name: 'Michigan' },
-  { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
-  { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' },
-  { code: 'NE', name: 'Nebraska' }, { code: 'NV', name: 'Nevada' },
-  { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' },
-  { code: 'NM', name: 'New Mexico' }, { code: 'NC', name: 'North Carolina' },
-  { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' },
-  { code: 'OK', name: 'Oklahoma' }, { code: 'OR', name: 'Oregon' },
-  { code: 'PA', name: 'Pennsylvania' }, { code: 'RI', name: 'Rhode Island' },
-  { code: 'SC', name: 'South Carolina' }, { code: 'SD', name: 'South Dakota' },
-  { code: 'TN', name: 'Tennessee' }, { code: 'TX', name: 'Texas' },
-  { code: 'UT', name: 'Utah' }, { code: 'VT', name: 'Vermont' },
-  { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' },
-  { code: 'WV', name: 'West Virginia' }, { code: 'WI', name: 'Wisconsin' },
-  { code: 'WY', name: 'Wyoming' }
-];
-
 export default function IntakeForm() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -145,11 +83,19 @@ export default function IntakeForm() {
     setLoading(true);
     
     try {
-      // Check state restrictions
-      const restrictedStates = ['AK', 'HI', 'NY'];
+      const supabase = createSupabaseClient();
       
-      if (restrictedStates.includes(data.state)) {
+      // 1. Check state restrictions
+      const { data: restricted } = await supabase
+        .from('restricted_states')
+        .select('*')
+        .eq('state_code', data.state)
+        .single();
+        
+      if (restricted) {
+        // Show waitlist modal
         alert('Service not yet available in your state. Join our waitlist!');
+        // Capture email for waitlist
         await fetch('/api/waitlist', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -158,10 +104,10 @@ export default function IntakeForm() {
         return;
       }
       
-      // Create user account
+      // 2. Create user account
       const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
-        password: Math.random().toString(36).slice(-8),
+        password: Math.random().toString(36).slice(-8), // Temp password
         options: {
           data: {
             phone: data.phone,
@@ -173,7 +119,7 @@ export default function IntakeForm() {
       
       if (error) throw error;
       
-      // Save assessment
+      // 3. Save assessment
       const { data: assessment, error: assessmentError } = await supabase
         .from('assessments')
         .insert({
@@ -188,7 +134,7 @@ export default function IntakeForm() {
       
       if (assessmentError) throw assessmentError;
       
-      // Redirect to checkout
+      // 4. Redirect to checkout
       router.push(`/checkout?assessment=${assessment.id}`);
       
     } catch (error) {
@@ -207,7 +153,7 @@ export default function IntakeForm() {
       return value && value !== '';
     });
     
-    if (isValid || step === 4) {
+    if (isValid) {
       setStep(s => Math.min(5, s + 1));
     } else {
       alert('Please complete all required fields');
@@ -228,17 +174,17 @@ export default function IntakeForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 pb-12">
+    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-2xl mx-auto px-6">
         {/* Progress bar */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-600">Step {step} of 5</span>
-            <span className="text-sm font-medium text-gray-600">{Math.round((step / 5) * 100)}% Complete</span>
+            <span className="text-sm text-gray-600">Step {step} of 5</span>
+            <span className="text-sm text-gray-600">{Math.round((step / 5) * 100)}% Complete</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+          <div className="w-full bg-gray-200 rounded-full h-2">
             <div 
-              className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500 ease-out"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
               style={{ width: `${(step / 5) * 100}%` }}
             />
           </div>
@@ -249,7 +195,7 @@ export default function IntakeForm() {
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">What are your health goals?</h2>
+                <h2 className="text-3xl font-bold mb-2">What are your health goals?</h2>
                 <p className="text-gray-600">Select all that apply</p>
               </div>
               
@@ -257,10 +203,10 @@ export default function IntakeForm() {
                 {GOALS.map((goal) => (
                   <label
                     key={goal.id}
-                    className={`block p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-blue-300 hover:shadow-md ${
+                    className={`block p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-blue-300 ${
                       form.watch('goals')?.includes(goal.id) 
-                        ? 'border-blue-500 bg-blue-50 shadow-md' 
-                        : 'border-gray-200 bg-white'
+                        ? 'border-blue-500 bg-blue-50' 
+                        : 'border-gray-200'
                     }`}
                   >
                     <input
@@ -269,17 +215,12 @@ export default function IntakeForm() {
                       className="sr-only"
                       {...form.register('goals')}
                     />
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 mt-1">{goal.icon}</div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900 text-lg">{goal.label}</div>
-                        <div className="text-sm text-gray-600 mt-1">{goal.description}</div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">{goal.icon}</span>
+                      <div>
+                        <div className="font-semibold">{goal.label}</div>
+                        <div className="text-sm text-gray-600">{goal.description}</div>
                       </div>
-                      {form.watch('goals')?.includes(goal.id) && (
-                        <svg className="w-6 h-6 text-blue-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                      )}
                     </div>
                   </label>
                 ))}
@@ -291,18 +232,18 @@ export default function IntakeForm() {
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Which symptoms are you experiencing?</h2>
-                <p className="text-gray-600">Select all that apply (optional)</p>
+                <h2 className="text-3xl font-bold mb-2">Which symptoms are you experiencing?</h2>
+                <p className="text-gray-600">Select all that apply</p>
               </div>
               
               <div className="space-y-3">
                 {SYMPTOMS.map((symptom) => (
                   <label
                     key={symptom}
-                    className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-blue-300 hover:shadow-md ${
+                    className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-blue-300 ${
                       form.watch('symptoms')?.includes(symptom)
-                        ? 'border-blue-500 bg-blue-50 shadow-md'
-                        : 'border-gray-200 bg-white'
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200'
                     }`}
                   >
                     <input
@@ -311,9 +252,9 @@ export default function IntakeForm() {
                       className="sr-only"
                       {...form.register('symptoms')}
                     />
-                    <span className="flex-1 text-gray-900">{symptom}</span>
+                    <span className="flex-1">{symptom}</span>
                     {form.watch('symptoms')?.includes(symptom) && (
-                      <svg className="w-5 h-5 text-blue-500 ml-3" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     )}
@@ -327,8 +268,8 @@ export default function IntakeForm() {
           {step === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Tell us about yourself</h2>
-                <p className="text-gray-600">We need this to create your account</p>
+                <h2 className="text-3xl font-bold mb-2">Contact Information</h2>
+                <p className="text-gray-600">We'll use this to create your account</p>
               </div>
               
               <div className="space-y-4">
@@ -339,7 +280,7 @@ export default function IntakeForm() {
                   <input
                     type="email"
                     {...form.register('email')}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -351,7 +292,7 @@ export default function IntakeForm() {
                   <input
                     type="tel"
                     {...form.register('phone')}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -363,7 +304,7 @@ export default function IntakeForm() {
                   <input
                     type="date"
                     {...form.register('dateOfBirth')}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 
@@ -371,17 +312,13 @@ export default function IntakeForm() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     State
                   </label>
-                  <select
+                  <input
+                    type="text"
                     {...form.register('state')}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                  >
-                    <option value="">Select your state</option>
-                    {US_STATES.map(state => (
-                      <option key={state.code} value={state.code}>
-                        {state.name}
-                      </option>
-                    ))}
-                  </select>
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="CA"
+                    maxLength={2}
+                  />
                 </div>
               </div>
             </div>
@@ -391,43 +328,41 @@ export default function IntakeForm() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Medical History</h2>
-                <p className="text-gray-600">Help us understand your health better</p>
+                <h2 className="text-3xl font-bold mb-2">Medical History</h2>
+                <p className="text-gray-600">This helps us personalize your treatment</p>
               </div>
               
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Current Medications (if any)
-                  </label>
-                  <textarea
-                    {...form.register('medications')}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    placeholder="List any medications or supplements you're currently taking"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Medical Conditions
-                  </label>
-                  <div className="space-y-2">
-                    {CONDITIONS.map((condition) => (
-                      <label
-                        key={condition}
-                        className="flex items-center p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50"
-                      >
-                        <input
-                          type="checkbox"
-                          value={condition}
-                          {...form.register('conditions')}
-                          className="mr-3 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <span className="text-gray-900">{condition}</span>
-                      </label>
-                    ))}
-                  </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Medications
+                </label>
+                <textarea
+                  {...form.register('medications')}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  rows={3}
+                  placeholder="List any medications you're currently taking..."
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Medical Conditions
+                </label>
+                <div className="space-y-2">
+                  {CONDITIONS.map((condition) => (
+                    <label
+                      key={condition}
+                      className="flex items-center p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        value={condition}
+                        {...form.register('conditions')}
+                        className="mr-3"
+                      />
+                      <span>{condition}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
@@ -437,49 +372,41 @@ export default function IntakeForm() {
           {step === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Consent & Agreement</h2>
-                <p className="text-gray-600">Please review and accept our terms</p>
+                <h2 className="text-3xl font-bold mb-2">Consent & Agreement</h2>
+                <p className="text-gray-600">Please review and agree to continue</p>
               </div>
               
-              <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 max-h-60 overflow-y-auto">
-                <h3 className="font-semibold mb-2">Medical Consent</h3>
-                <p className="mb-3">
-                  I understand that this is a telemedicine service and that my healthcare provider 
-                  will review my information to determine if treatment is appropriate for me.
-                </p>
-                <h3 className="font-semibold mb-2">Privacy & HIPAA</h3>
-                <p className="mb-3">
-                  I understand that my health information will be protected according to HIPAA 
-                  regulations and will only be shared with my healthcare team.
-                </p>
-                <h3 className="font-semibold mb-2">Billing</h3>
-                <p>
-                  I understand that this is a quarterly subscription service billed every 3 months, 
-                  and I can cancel after the initial 3-month period.
-                </p>
+              <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 space-y-2">
+                <p>By checking the box below, you agree that:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>You are 18 years or older</li>
+                  <li>The information you provided is accurate</li>
+                  <li>You consent to telehealth treatment</li>
+                  <li>You understand this is a subscription service</li>
+                  <li>You agree to our Terms of Service and Privacy Policy</li>
+                </ul>
               </div>
               
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   {...form.register('consent')}
-                  className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="mt-1"
                 />
-                <span className="text-sm text-gray-700">
-                  I have read and agree to the medical consent, privacy policy, and billing terms. 
-                  I confirm that I am 18 years or older.
+                <span className="text-sm">
+                  I agree to the terms above and consent to treatment
                 </span>
               </label>
             </div>
           )}
 
-          {/* Navigation Buttons */}
+          {/* Navigation buttons */}
           <div className="flex justify-between mt-8">
             {step > 1 && (
               <button
                 type="button"
                 onClick={prevStep}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="px-6 py-3 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
                 Previous
               </button>
@@ -489,15 +416,15 @@ export default function IntakeForm() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="ml-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="ml-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
               >
-                Next
+                Continue
               </button>
             ) : (
               <button
                 type="submit"
                 disabled={loading || !form.watch('consent')}
-                className="ml-auto px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+                className="ml-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Processing...' : 'Complete Assessment'}
               </button>

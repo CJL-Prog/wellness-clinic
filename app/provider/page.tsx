@@ -10,13 +10,13 @@ export default function ProviderDashboard() {
     approved: 0,
     revenue: 0
   });
-  const supabase = createClientComponentClient();
 
   useEffect(() => {
     loadAssessments();
   }, []);
 
   const loadAssessments = async () => {
+    const supabase = createClientComponentClient();
     // This would fetch from your API
     // const { data } = await supabase
     //   .from('assessments')
@@ -43,7 +43,10 @@ export default function ProviderDashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Provider Dashboard</h1>
           <button
-            onClick={() => supabase.auth.signOut()}
+            onClick={() => {
+              const supabase = createClientComponentClient();
+              supabase.auth.signOut();
+            }}
             className="text-gray-600 hover:text-gray-900"
           >
             Sign Out
