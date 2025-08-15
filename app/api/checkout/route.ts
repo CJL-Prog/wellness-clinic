@@ -11,61 +11,60 @@ const PRICES = {
 };
 
 export async function POST(request: Request) {
-  const { assessmentId, plan = 'comprehensive' } = await request.json();
-  const supabase = createRouteHandlerClient({ cookies });
-  
-  // Get user
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  
-  // Create or get Stripe customer
-  let customerId = user.user_metadata?.stripe_customer_id;
-  
-  if (!customerId) {
-    const customer = await stripe.customers.create({
-      email: user.email!,
-      metadata: {
-        supabase_uid: user.id
-      }
-    });
-    customerId = customer.id;
+  try {
+    const { assessmentId, plan = 'comprehensive' } = await request.json();
+    const supabase = createRouteHandlerClient({ cookies });
     
-    // Save for later
-    await supabase.auth.updateUser({
-      data: { stripe_customer_id: customerId }
-    });
-  }
-  
-  // Create checkout session for quarterly subscription
-  const session = await stripe.checkout.sessions.create({
-    customer: customerId,
-    payment_method_types: ['card'],
-    line_items: [{
-      price: PRICES[plan as keyof typeof PRICES],
-      quantity: 1
-    }],
-    mode: 'subscription',
-    subscription_data: {
-      metadata: {
-        assessment_id: assessmentId,
-        plan_type: plan
-      },
-      // This enforces the 3-month minimum
-      trial_end: Math.floor(Date.now() / 1000) + (90 * 24 * 60 * 60)
-    },
-    success_url: `${process.env.NEXT_PUBLIC_URL}/welcome?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_URL}/checkout?canceled=true`,
+    // Get user
+    const { data: { user } } = await supabase.auth.getUser();
     
-    // Important for HSA/FSA
-    payment_method_options: {
-      card: {
-        statement_descriptor: 'WELLNESS CLINIC MED'
-      }
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-  });
-  
-  return NextResponse.json({ url: session.url });
+    
+    // Create or get Stripe customer
+    let customerId = user.user_metadata?.stripe_customer_id;
+    
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: user.email!,
+        metadata: {
+          supabase_uid: user.id
+        }
+      });
+      customerId = customer.id;
+      
+      // Save for later
+      await supabase.auth.updateUser({
+        data: { stripe_customer_id: customerId }
+      });
+    }
+    
+    // Create checkout session for quarterly subscription
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      payment_method_types: ['card'],
+      line_items: [{
+        price: PRICES[plan as keyof typeof PRICES],
+        quantity: 1
+      }],
+      mode: 'subscription',
+      subscription_data: {
+        metadata: {
+          assessment_id: assessmentId,
+          plan_type: plan
+        }
+      },
+      success_url: `${process.env.NEXT_PUBLIC_URL}/welcome?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/checkout?canceled=true`
+    });
+    
+    return NextResponse.json({ url: session.url });
+  } catch (error) {
+    console.error('Checkout error:', error);
+    return NextResponse.json(
+      { error: 'Failed to create checkout session' },
+      { status: 500 }
+    );
+  }
 }
