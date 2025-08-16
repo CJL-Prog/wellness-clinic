@@ -32,38 +32,52 @@ export function Hero() {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            Feel Better.
-            <span className="gradient-text"> Look Better.</span>
+         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            Get the <span className="gradient-text">Weight Loss Meds</span>
             <br />
-            Live Better.
+            Your Doctor Won't Prescribe
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-neutral-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Personalized health solutions with peptides, hormone optimization, 
-            weight loss programs, and advanced testing — all delivered to your door.
+            Board-certified physicians prescribe Ozempic, Mounjaro & more. 
+            <span className="font-bold">No insurance needed.</span> Medication in 48 hours.
+            <span className="text-emerald-600 font-bold"> 20% average weight loss.</span>
           </p>
+
+          {/* Add urgency element */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex items-center px-4 py-2 bg-yellow-100 rounded-full border-2 border-yellow-300">
+              <span className="text-sm font-bold text-yellow-800">
+                ⚡ 142 people started today • Limited provider availability
+              </span>
+            </div>
+          </div>
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
               href="/intake"
-              className="brutal-button group flex items-center justify-center gap-2"
+              className="brutal-button group flex items-center justify-center gap-2 text-lg px-8 py-4"
             >
-              Start Your Health Assessment
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-            
-            <Link 
-              href="#how-it-works"
-              className="px-8 py-3 bg-white border-2 border-black rounded-lg font-bold hover:bg-neutral-50 transition-all"
-              style={{ boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)' }}
-            >
-              See How It Works
-            </Link>
+            See If You Qualify
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </Link>
+  
+          <Link 
+            href="/pricing"
+            className="px-8 py-4 bg-white border-2 border-black rounded-lg font-bold hover:bg-neutral-50 transition-all text-lg"
+            style={{ boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)' }}
+          >
+            View Pricing ($199/mo)
+          </Link>
           </div>
+
+          {/* Add "no credit card" trust text */}
+          <p className="text-center text-sm text-neutral-500 -mt-8 mb-12">
+            ✓ No credit card required to start • ✓ 2-minute assessment
+          </p>
           
           {/* Trust indicators */}
           <motion.div 

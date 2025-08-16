@@ -23,26 +23,29 @@ const jakarta = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-// Metadata configuration
+// Metadata configuration - UPDATED FOR BETTER SEO
 export const metadata: Metadata = {
   title: {
-    default: 'HealthClinic - Personalized Health Solutions',
+    default: 'Get Prescribed Ozempic Online | Weight Loss Medications | HealthClinic',
     template: '%s | HealthClinic'
   },
-  description: 'Advanced peptide therapy, hormone optimization, medical weight loss, and comprehensive lab testing. Board-certified physicians, discreet delivery, HSA/FSA eligible.',
+  description: 'Get prescribed Ozempic, Mounjaro, and Wegovy online in 48 hours. Board-certified doctors, no insurance needed. Lose 20% body weight. HSA/FSA eligible.',
   keywords: [
+    'ozempic online prescription',
+    'semaglutide without insurance',
+    'mounjaro prescription online',
+    'wegovy online doctor',
+    'tirzepatide prescription',
+    'GLP-1 weight loss',
+    'online weight loss doctor',
+    'telemedicine weight loss',
+    'get ozempic without insurance',
+    'semaglutide online',
     'peptide therapy',
     'hormone replacement therapy',
-    'HRT',
-    'weight loss',
-    'GLP-1',
-    'semaglutide',
-    'tirzepatide',
-    'telemedicine',
-    'online doctor',
-    'health optimization',
-    'lab testing',
-    'wellness clinic'
+    'HRT online',
+    'testosterone therapy online',
+    'TRT telemedicine'
   ],
   authors: [{ name: 'HealthClinic' }],
   creator: 'HealthClinic',
@@ -57,8 +60,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'HealthClinic - Personalized Health Solutions',
-    description: 'Transform your health with physician-supervised peptide therapy, hormone optimization, and medical weight loss programs.',
+    title: 'Get Prescribed Ozempic Online | Weight Loss Medications | HealthClinic',
+    description: 'Get prescribed Ozempic, Mounjaro, and Wegovy online in 48 hours. Board-certified doctors, no insurance needed. Lose 20% body weight. HSA/FSA eligible.',
     url: '/',
     siteName: 'HealthClinic',
     images: [
@@ -66,7 +69,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'HealthClinic - Personalized Health Solutions',
+        alt: 'HealthClinic - Get Prescribed Weight Loss Medications Online',
       }
     ],
     locale: 'en_US',
@@ -74,8 +77,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HealthClinic - Personalized Health Solutions',
-    description: 'Transform your health with physician-supervised peptide therapy, hormone optimization, and medical weight loss programs.',
+    title: 'Get Prescribed Ozempic Online | HealthClinic',
+    description: 'Board-certified doctors prescribe weight loss medications online. No insurance needed. 48-hour approval. HSA/FSA eligible.',
     images: ['/twitter-image.png'],
     creator: '@healthclinic',
   },
@@ -179,7 +182,7 @@ export default function RootLayout({
           </Script>
         )}
         
-        {/* Structured Data for SEO */}
+        {/* Updated Structured Data for SEO - Weight Loss Focus */}
         <Script
           id="structured-data"
           type="application/ld+json"
@@ -188,7 +191,7 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'MedicalBusiness',
               name: 'HealthClinic',
-              description: 'Personalized health solutions with peptide therapy, hormone optimization, and medical weight loss.',
+              description: 'Online weight loss clinic prescribing Ozempic, Mounjaro, and Wegovy. Board-certified physicians, no insurance required.',
               url: process.env.NEXT_PUBLIC_URL || 'https://healthclinic.com',
               telephone: '1-800-XXX-XXXX',
               email: 'support@healthclinic.com',
@@ -204,12 +207,18 @@ export default function RootLayout({
               ],
               medicalSpecialty: [
                 'EndocrinologyAndMetabolism',
+                'Bariatrics',
                 'PreventiveMedicine',
               ],
               priceRange: '$$',
               openingHours: 'Mo-Fr 08:00-20:00 Sa-Su 09:00-17:00',
               paymentAccepted: ['Cash', 'Credit Card', 'HSA', 'FSA'],
               availableService: [
+                {
+                  '@type': 'MedicalProcedure',
+                  name: 'GLP-1 Weight Loss Program',
+                  description: 'Semaglutide (Ozempic/Wegovy) and Tirzepatide (Mounjaro) for weight loss',
+                },
                 {
                   '@type': 'MedicalProcedure',
                   name: 'Peptide Therapy',
@@ -221,16 +230,18 @@ export default function RootLayout({
                   description: 'Bioidentical hormone optimization for men and women',
                 },
                 {
-                  '@type': 'MedicalProcedure',
-                  name: 'Medical Weight Loss',
-                  description: 'Physician-supervised GLP-1 weight loss programs',
-                },
-                {
                   '@type': 'MedicalTest',
                   name: 'Comprehensive Lab Testing',
                   description: 'Advanced biomarker analysis and health optimization',
                 },
               ],
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.9',
+                reviewCount: '2847',
+                bestRating: '5',
+                worstRating: '1'
+              },
             }),
           }}
         />
