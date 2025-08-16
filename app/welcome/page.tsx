@@ -1,124 +1,107 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
-export default function CheckoutPage() {
+function WelcomeContent() {
   const searchParams = useSearchParams();
-  const assessmentId = searchParams.get('assessment');
-  const canceled = searchParams.get('canceled');
-
-  if (canceled) {
-    return (
-      <div className="min-h-screen bg-gray-50 pt-24 pb-12">
-        <div className="max-w-md mx-auto px-6">
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold mb-4">Payment Canceled</h1>
-            <p className="text-gray-600 mb-6">
-              Your payment was canceled. Don't worry, your assessment has been saved and you can complete checkout anytime.
-            </p>
-            <Link
-              href="/intake"
-              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
-            >
-              Return to Assessment
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const sessionId = searchParams.get('session_id');
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
-      <div className="max-w-4xl mx-auto px-6">
-        <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Order Summary */}
-          <div className="md:col-span-2 bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-            
-            <div className="border-b pb-4 mb-4">
-              <div className="flex justify-between mb-2">
-                <span className="font-medium">Comprehensive Membership</span>
-                <span>$399/month</span>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-24 pb-12">
+      <div className="max-w-2xl mx-auto px-6">
+        <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+          {/* Success Icon */}
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          
+          <h1 className="text-3xl font-bold mb-4">Welcome to Your Health Journey!</h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Your payment was successful and your assessment is being reviewed.
+          </p>
+          
+          {/* What Happens Next */}
+          <div className="bg-gray-50 rounded-xl p-6 mb-8 text-left">
+            <h2 className="font-semibold mb-4">What happens next?</h2>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <span className="text-blue-600 font-bold">1.</span>
+                <div>
+                  <p className="font-medium">Provider Review (24-48 hours)</p>
+                  <p className="text-sm text-gray-600">A licensed physician will review your assessment</p>
+                </div>
               </div>
-              <p className="text-sm text-gray-600">Billed quarterly ($1,197 every 3 months)</p>
-            </div>
-            
-            <div className="space-y-2 mb-4">
-              <h3 className="font-medium">What's Included:</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>✓ Physician consultation & ongoing care</li>
-                <li>✓ Personalized treatment plan</li>
-                <li>✓ Medications shipped monthly</li>
-                <li>✓ Regular provider check-ins</li>
-                <li>✓ Lab testing (when required)</li>
-              </ul>
-            </div>
-            
-            <div className="bg-blue-50 rounded-lg p-4">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> After physician review, if your treatment is not approved, you will receive a full refund.
-              </p>
+              <div className="flex items-start gap-3">
+                <span className="text-blue-600 font-bold">2.</span>
+                <div>
+                  <p className="font-medium">Treatment Plan Created</p>
+                  <p className="text-sm text-gray-600">Your personalized protocol will be prepared</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-blue-600 font-bold">3.</span>
+                <div>
+                  <p className="font-medium">Medications Shipped</p>
+                  <p className="text-sm text-gray-600">Delivered discreetly to your door in 3-5 days</p>
+                </div>
+              </div>
             </div>
           </div>
           
-          {/* Payment Form */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold mb-4">Payment</h2>
-            
-            <div className="mb-4">
-              <div className="flex justify-between text-lg font-semibold">
-                <span>Total Due Today:</span>
-                <span>$1,197</span>
-              </div>
-              <p className="text-sm text-gray-600 mt-1">First 3 months</p>
-            </div>
-            
-            <button
-              onClick={() => {
-                // This would integrate with Stripe
-                alert('Stripe checkout would open here');
-              }}
-              className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors mb-3"
+          {/* Action Buttons */}
+          <div className="space-y-3">
+            <Link
+              href="/portal"
+              className="block w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              Pay with Card
-            </button>
-            
-            <div className="text-center text-sm text-gray-600">
-              <p className="mb-2">or pay with</p>
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                HSA/FSA Card
-              </button>
-            </div>
-            
-            <div className="mt-4 pt-4 border-t">
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                </svg>
-                <span>Secure payment by Stripe</span>
-              </div>
+              Go to Patient Portal
+            </Link>
+            <Link
+              href="/"
+              className="block w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+            >
+              Return to Home
+            </Link>
+          </div>
+          
+          {/* Support Info */}
+          <div className="mt-8 pt-8 border-t">
+            <p className="text-sm text-gray-600 mb-2">Need help? We're here for you.</p>
+            <div className="flex justify-center gap-4 text-sm">
+              <a href="mailto:support@clinic.com" className="text-blue-600 hover:underline">
+                support@clinic.com
+              </a>
+              <span className="text-gray-400">|</span>
+              <a href="tel:1-800-XXX-XXXX" className="text-blue-600 hover:underline">
+                1-800-XXX-XXXX
+              </a>
             </div>
           </div>
         </div>
-        
-        {/* Terms */}
-        <div className="mt-8 text-center text-sm text-gray-600">
-          <p>
-            By completing this purchase, you agree to our{' '}
-            <Link href="/terms" className="text-blue-600 hover:underline">Terms of Service</Link>
-            {' '}and{' '}
-            <Link href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link>
-          </p>
-        </div>
       </div>
     </div>
+  );
+}
+
+export default function WelcomePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-24 pb-12">
+        <div className="max-w-2xl mx-auto px-6">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="animate-pulse">
+              <div className="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-6"></div>
+              <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <WelcomeContent />
+    </Suspense>
   );
 }
