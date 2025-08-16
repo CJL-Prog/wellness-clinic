@@ -152,30 +152,30 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
       <div className="grid grid-cols-3 gap-6">
         {/* Left: Patient Info */}
         <div className="col-span-2 space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="brutal-card bg-white">
             <h2 className="text-xl font-bold mb-4">Patient Information</h2>
             <dl className="grid grid-cols-2 gap-4">
               <div>
-                <dt className="text-gray-600">Age</dt>
-                <dd className="font-medium">{calculateAge(assessment.profiles?.date_of_birth)}</dd>
+                <dt className="text-neutral-600">Age</dt>
+                <dd className="font-bold">{calculateAge(assessment.profiles?.date_of_birth)}</dd>
               </div>
               <div>
-                <dt className="text-gray-600">State</dt>
-                <dd className="font-medium">{assessment.profiles?.state}</dd>
+                <dt className="text-neutral-600">State</dt>
+                <dd className="font-bold">{assessment.profiles?.state}</dd>
               </div>
               <div>
-                <dt className="text-gray-600">Primary Goals</dt>
-                <dd className="font-medium">{assessment.goals?.join(', ')}</dd>
+                <dt className="text-neutral-600">Primary Goals</dt>
+                <dd className="font-bold">{assessment.goals?.join(', ')}</dd>
               </div>
               <div>
-                <dt className="text-gray-600">Symptoms</dt>
-                <dd className="font-medium">{assessment.symptoms?.join(', ')}</dd>
+                <dt className="text-neutral-600">Symptoms</dt>
+                <dd className="font-bold">{assessment.symptoms?.join(', ')}</dd>
               </div>
             </dl>
           </div>
           
           {/* Medical History */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="brutal-card bg-white">
             <h2 className="text-xl font-bold mb-4">Medical History</h2>
             <div className="space-y-2">
               <p><strong>Current Medications:</strong> {assessment.medications || 'None'}</p>
@@ -185,18 +185,18 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
           </div>
           
           {/* Prescription Builder */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="brutal-card bg-white">
             <h2 className="text-xl font-bold mb-4">Treatment Plan</h2>
             
             {/* Quick protocols */}
             <div className="mb-4">
-              <label className="text-sm text-gray-600">Quick Protocols:</label>
+              <label className="text-sm text-neutral-600">Quick Protocols:</label>
               <div className="flex gap-2 mt-2">
                 {Object.keys(PROTOCOL_TEMPLATES).map(key => (
                   <button
                     key={key}
                     onClick={() => applyProtocol(key)}
-                    className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm"
+                    className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded text-sm font-bold border-2 border-black"
                   >
                     {key.replace('_', ' ')}
                   </button>
@@ -207,17 +207,17 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
             {/* Prescriptions list */}
             <div className="space-y-3">
               {prescriptions.map((rx, i) => (
-                <div key={i} className="border rounded p-3">
+                <div key={i} className="border-2 border-black rounded p-3">
                   <input
                     value={rx.medication}
                     onChange={(e) => updatePrescription(i, 'medication', e.target.value)}
-                    className="font-medium mb-2 w-full p-1 border rounded"
+                    className="font-bold mb-2 w-full p-1 border-2 border-neutral-300 rounded"
                     placeholder="Medication name"
                   />
                   <input
                     value={rx.dosing}
                     onChange={(e) => updatePrescription(i, 'dosing', e.target.value)}
-                    className="text-sm text-gray-600 w-full p-1 border rounded"
+                    className="text-sm text-neutral-600 w-full p-1 border-2 border-neutral-300 rounded"
                     placeholder="Sig / Dosing instructions"
                   />
                 </div>
@@ -225,7 +225,7 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
               
               <button
                 onClick={() => setPrescriptions([...prescriptions, {}])}
-                className="text-blue-600 text-sm"
+                className="gradient-text text-sm font-bold"
               >
                 + Add Medication
               </button>
@@ -236,7 +236,7 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Provider notes (patient won't see this)"
-              className="w-full mt-4 p-3 border rounded"
+              className="w-full mt-4 p-3 border-2 border-neutral-300 rounded-lg"
               rows={3}
             />
           </div>
@@ -245,7 +245,7 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
         {/* Right: Actions & Contraindications */}
         <div className="space-y-6">
           {/* Contraindication Checker */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="bg-yellow-50 border-2 border-black rounded-lg p-4">
             <h3 className="font-bold text-yellow-800 mb-2">⚠️ Check Contraindications</h3>
             <ul className="text-sm space-y-1">
               {getContraindications(assessment).map((warning, i) => (
@@ -255,40 +255,41 @@ export default function ReviewAssessment({ params }: { params: { id: string } })
           </div>
           
           {/* Lab Requirements */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="font-bold text-blue-800 mb-2">🔬 Lab Requirements</h3>
-            <p className="text-sm text-blue-700">
+          <div className="bg-emerald-50 border-2 border-black rounded-lg p-4">
+            <h3 className="font-bold text-emerald-800 mb-2">🔬 Lab Requirements</h3>
+            <p className="text-sm text-emerald-700">
               {getLabRequirements(prescriptions)}
             </p>
           </div>
           
           {/* Action Buttons */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="brutal-card bg-white">
             <button
               onClick={approve}
               disabled={loading || prescriptions.length === 0}
-              className="w-full bg-green-600 text-white py-3 rounded-lg font-medium mb-3 disabled:opacity-50"
+              className="w-full brutal-button mb-3 disabled:opacity-50"
             >
               {loading ? 'Processing...' : 'Approve & Send to Pharmacy'}
             </button>
             
             <button
               onClick={() => setShowDenyModal(true)}
-              className="w-full bg-red-100 text-red-700 py-3 rounded-lg font-medium"
+              className="w-full bg-red-100 text-red-700 py-3 rounded-lg font-bold border-2 border-black"
+              style={{ boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)' }}
             >
               Deny (Medical Contraindication)
             </button>
             
             <button
               onClick={() => setShowDeferModal(true)}
-              className="w-full mt-3 border py-3 rounded-lg"
+              className="w-full mt-3 border-2 border-black py-3 rounded-lg font-bold"
             >
               Request Labs First
             </button>
           </div>
           
           {/* Legal/Compliance */}
-          <div className="bg-gray-50 rounded-lg p-4 text-xs text-gray-600">
+          <div className="glass-card rounded-lg p-4 text-xs text-neutral-600">
             <p className="mb-2">✓ DEA License: Valid</p>
             <p className="mb-2">✓ State License: {assessment.profiles?.state} - Valid</p>
             <p className="mb-2">✓ Prescription Monitoring: Checked</p>

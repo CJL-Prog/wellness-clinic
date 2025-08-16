@@ -55,7 +55,7 @@ const trustItems = [
 
 export function TrustBar() {
   return (
-    <div className="bg-gradient-to-r from-neutral-50 to-neutral-100 border-y border-neutral-200 py-3 overflow-hidden">
+    <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border-y-2 border-black py-3 overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div 
           className="flex space-x-8 md:space-x-12"
@@ -77,8 +77,8 @@ export function TrustBar() {
               key={index}
               className="flex items-center gap-2 whitespace-nowrap text-sm"
             >
-              <span className="text-primary-600">{item.icon}</span>
-              <span className="font-medium text-neutral-700">{item.text}</span>
+              <span className="text-emerald-600">{item.icon}</span>
+              <span className="font-bold text-neutral-900">{item.text}</span>
             </div>
           ))}
         </motion.div>

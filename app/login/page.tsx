@@ -16,14 +16,8 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // This would integrate with Supabase auth
       console.log('Login attempt:', { email, password });
-      
-      // For demo purposes
       alert('Login functionality would be implemented here with Supabase');
-      
-      // After successful login, redirect to portal
-      // router.push('/portal');
     } catch (err) {
       setError('Invalid email or password');
     } finally {
@@ -32,23 +26,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center py-12 px-6">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
           <p className="text-gray-600">Sign in to access your patient portal</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="brutal-card p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-50 border-2 border-red-500 text-red-700 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-1">
                 Email Address
               </label>
               <input
@@ -57,13 +51,13 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1">
                 Password
               </label>
               <input
@@ -72,7 +66,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 placeholder="••••••••"
               />
             </div>
@@ -82,7 +76,7 @@ export default function LoginPage() {
                 <input type="checkbox" className="mr-2" />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
-              <a href="#" className="text-sm text-blue-600 hover:underline">
+              <a href="#" className="text-sm text-emerald-600 hover:underline font-bold">
                 Forgot password?
               </a>
             </div>
@@ -90,7 +84,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full brutal-button disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -99,14 +93,13 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               New patient?{' '}
-              <Link href="/intake" className="text-blue-600 hover:underline font-medium">
+              <Link href="/intake" className="text-emerald-600 hover:underline font-bold">
                 Start your assessment
               </Link>
             </p>
           </div>
         </div>
 
-        {/* Provider Login Link */}
         <div className="mt-8 text-center">
           <Link href="/provider/login" className="text-sm text-gray-500 hover:text-gray-700">
             Provider? Sign in here →

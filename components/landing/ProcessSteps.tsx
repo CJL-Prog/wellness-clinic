@@ -24,7 +24,7 @@ const steps = [
 
 export function ProcessSteps() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-neutral-50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0 }}
@@ -33,13 +33,13 @@ export function ProcessSteps() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4">Your Journey to Better Health</h2>
-          <p className="text-xl text-gray-600">Simple, fast, and completely online</p>
+          <p className="text-xl text-neutral-600">Simple, fast, and completely online</p>
         </motion.div>
 
         <div className="max-w-5xl mx-auto">
           <div className="relative">
             {/* Connection line */}
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 hidden md:block" />
+            <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-emerald-200 via-emerald-400 to-emerald-200 hidden md:block" />
             
             <div className="grid md:grid-cols-3 gap-8 relative">
               {steps.map((step, index) => (
@@ -51,13 +51,13 @@ export function ProcessSteps() {
                   transition={{ delay: index * 0.2 }}
                   className="relative"
                 >
-                  <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white text-2xl font-bold mb-4 mx-auto">
+                  <div className="brutal-card bg-white">
+                    <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full text-white text-2xl font-bold mb-4 mx-auto border-2 border-black">
                       {step.number}
                     </div>
                     <div className="text-3xl mb-4 text-center">{step.icon}</div>
                     <h3 className="text-xl font-bold mb-2 text-center">{step.title}</h3>
-                    <p className="text-gray-600 text-center">{step.description}</p>
+                    <p className="text-neutral-600 text-center">{step.description}</p>
                   </div>
                 </motion.div>
               ))}

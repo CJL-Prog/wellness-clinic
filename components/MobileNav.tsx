@@ -82,7 +82,7 @@ export function MobileNav() {
     <>
       {/* Bottom Navigation Bar - Mobile Only */}
       <motion.div
-        className="fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-200 md:hidden z-40"
+        className="fixed bottom-0 left-0 right-0 glass border-t-2 border-black md:hidden z-40"
         initial={{ y: 0 }}
         animate={{ y: isVisible ? 0 : 100 }}
         transition={{ duration: 0.3 }}
@@ -110,20 +110,20 @@ export function MobileNav() {
                 href={item.href}
                 className={`flex flex-col items-center py-2 px-1 transition-colors ${
                   item.isPrimary
-                    ? 'text-primary-600'
+                    ? 'text-emerald-600'
                     : isActive
-                    ? 'text-primary-600'
+                    ? 'text-emerald-600'
                     : 'text-neutral-600'
                 }`}
               >
                 {item.isPrimary ? (
-                  <div className="bg-primary-500 rounded-full p-2 text-white">
+                  <div className="bg-emerald-500 rounded-full p-2 text-white">
                     {item.icon}
                   </div>
                 ) : (
                   <span>{item.icon}</span>
                 )}
-                <span className={`text-xs mt-1 ${item.isPrimary ? 'font-semibold' : ''}`}>
+                <span className={`text-xs mt-1 ${item.isPrimary ? 'font-bold' : ''}`}>
                   {item.label}
                 </span>
               </Link>
@@ -151,11 +151,11 @@ export function MobileNav() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 20 }}
-              className="fixed right-0 top-0 bottom-0 w-4/5 bg-white z-50 md:hidden overflow-y-auto"
+              className="fixed right-0 top-0 bottom-0 w-4/5 glass-card z-50 md:hidden overflow-y-auto"
             >
               <div className="p-6">
                 <div className="flex justify-between items-center mb-8">
-                  <h2 className="text-2xl font-bold">Menu</h2>
+                  <h2 className="text-2xl font-bold gradient-text">Menu</h2>
                   <button
                     onClick={() => setIsMenuOpen(false)}
                     className="p-2 hover:bg-neutral-100 rounded-lg"
@@ -169,76 +169,76 @@ export function MobileNav() {
                 <nav className="space-y-2">
                   <Link
                     href="/services"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50 font-medium"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50 font-bold text-neutral-900"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     All Services
                   </Link>
                   <Link
                     href="/services/peptides"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Peptide Therapy
                   </Link>
                   <Link
                     href="/services/hrt"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Hormone Replacement
                   </Link>
                   <Link
                     href="/services/weight-loss"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Weight Loss
                   </Link>
                   <Link
                     href="/labs"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Lab Testing
                   </Link>
                   
-                  <hr className="my-4" />
+                  <hr className="my-4 border-black" />
                   
                   <Link
                     href="/how-it-works"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     How It Works
                   </Link>
                   <Link
                     href="/pricing"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Pricing
                   </Link>
                   <Link
                     href="/faq"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     FAQ
                   </Link>
                   
-                  <hr className="my-4" />
+                  <hr className="my-4 border-black" />
                   
                   <Link
                     href="/portal"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Patient Portal
                   </Link>
                   <Link
                     href="/journal"
-                    className="block py-3 px-4 rounded-lg hover:bg-neutral-50"
+                    className="block py-3 px-4 rounded-lg hover:bg-emerald-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Health Journal
@@ -248,7 +248,7 @@ export function MobileNav() {
                 <div className="mt-8">
                   <Link
                     href="/intake"
-                    className="block w-full py-3 bg-primary-500 text-white rounded-lg font-semibold text-center hover:bg-primary-600 transition-colors"
+                    className="brutal-button w-full text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Start Assessment
@@ -256,7 +256,7 @@ export function MobileNav() {
                 </div>
                 
                 <div className="mt-8 text-center text-sm text-neutral-500">
-                  <p>Support: 1-800-XXX-XXXX</p>
+                  <p className="font-bold">Support: 1-800-XXX-XXXX</p>
                   <p>Mon-Fri 8am-8pm EST</p>
                 </div>
               </div>

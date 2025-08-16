@@ -8,7 +8,7 @@ const timeline = [
     title: 'Complete Assessment',
     description: 'Fill out our comprehensive health questionnaire and medical history',
     icon: '📋',
-    color: 'from-blue-500 to-blue-600'
+    color: 'from-emerald-500 to-emerald-600'
   },
   {
     day: 'Day 2',
@@ -56,21 +56,21 @@ export default function HowItWorksPage() {
   return (
     <div className="pt-24 pb-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-white py-16">
+      <section className="bg-gradient-to-br from-emerald-50 to-white py-16">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-5xl font-bold mb-6">How It Works</h1>
+            <h1 className="text-5xl font-bold mb-6 gradient-text-hero">How It Works</h1>
             <p className="text-xl text-gray-600 mb-8">
               Get personalized treatment in days, not months. 
               100% online, physician-supervised, delivered to you.
             </p>
             <Link
               href="/intake"
-              className="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all"
+              className="inline-block brutal-button"
             >
               Start Your Assessment
             </Link>
@@ -93,8 +93,8 @@ export default function HowItWorksPage() {
 
           <div className="max-w-4xl mx-auto">
             <div className="relative">
-              {/* Background line - positioned behind everything */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-200 via-purple-200 to-green-200" />
+              {/* Background line */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-emerald-200 via-purple-200 to-green-200" />
               
               {/* Timeline items */}
               <div className="relative space-y-12">
@@ -110,14 +110,14 @@ export default function HowItWorksPage() {
                     <div className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
                       {/* Content card */}
                       <div className="w-5/12">
-                        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                          <span className="text-sm font-semibold text-gray-500">{item.day}</span>
+                        <div className="brutal-card p-6 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
+                          <span className="text-sm font-bold text-gray-500">{item.day}</span>
                           <h3 className="text-xl font-bold mt-1 mb-2">{item.title}</h3>
                           <p className="text-gray-600">{item.description}</p>
                         </div>
                       </div>
                       
-                      {/* Center icon with higher z-index */}
+                      {/* Center icon */}
                       <div className="w-2/12 flex justify-center">
                         <div className={`
                           relative z-10 w-20 h-20 rounded-full 
@@ -192,7 +192,7 @@ export default function HowItWorksPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="brutal-card p-6 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
@@ -223,7 +223,7 @@ export default function HowItWorksPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="bg-gray-50 rounded-xl p-6"
+                className="brutal-card p-6"
               >
                 <h3 className="text-lg font-bold mb-2">{faq.question}</h3>
                 <p className="text-gray-600">{faq.answer}</p>
@@ -235,7 +235,7 @@ export default function HowItWorksPage() {
             <p className="text-gray-600 mb-4">Ready to get started?</p>
             <Link
               href="/intake"
-              className="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all"
+              className="inline-block brutal-button"
             >
               Begin Your Assessment
             </Link>

@@ -66,7 +66,7 @@ export function Services() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4">Transform Your Health</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
             Evidence-based treatments personalized to your unique biology
           </p>
         </motion.div>
@@ -84,20 +84,20 @@ export function Services() {
               className="relative"
             >
               <div className={`
-                h-full p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer
+                brutal-card h-full bg-white transition-all duration-300 cursor-pointer
                 ${hoveredIndex === index 
-                  ? 'border-blue-500 shadow-xl transform -translate-y-2' 
-                  : 'border-gray-200 hover:border-gray-300'}
+                  ? 'transform -translate-y-2' 
+                  : ''}
               `}>
                 <div className="text-4xl mb-4">{service.icon}</div>
                 <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
+                <p className="text-neutral-600 mb-4">{service.description}</p>
                 
                 <ul className="space-y-2">
                   {service.benefits.map((benefit, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="text-green-500 mt-0.5">✓</span>
-                      <span className="text-gray-600">{benefit}</span>
+                      <span className="text-emerald-500 mt-0.5">✓</span>
+                      <span className="text-neutral-600">{benefit}</span>
                     </li>
                   ))}
                 </ul>
@@ -107,7 +107,7 @@ export function Services() {
                   animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
                   className="absolute bottom-6 right-6"
                 >
-                  <span className="text-blue-600 font-semibold">
+                  <span className="gradient-text font-bold">
                     Learn more →
                   </span>
                 </motion.div>

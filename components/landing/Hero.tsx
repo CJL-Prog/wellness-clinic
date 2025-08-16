@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-pink-50 overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10 pt-20">
@@ -24,22 +24,22 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full mb-8"
+            className="inline-flex items-center px-4 py-2 brutal-card bg-emerald-100 mb-8"
           >
-            <span className="text-sm font-semibold text-blue-800">
+            <span className="text-sm font-bold text-emerald-800">
               ✨ HSA/FSA Eligible • Licensed Physicians • Discreet Delivery
             </span>
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Feel Better.
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Look Better.</span>
+            <span className="gradient-text"> Look Better.</span>
             <br />
             Live Better.
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-neutral-600 mb-10 max-w-3xl mx-auto leading-relaxed">
             Personalized health solutions with peptides, hormone optimization, 
             weight loss programs, and advanced testing — all delivered to your door.
           </p>
@@ -48,7 +48,7 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
               href="/intake"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-blue-800 transform hover:-translate-y-1 transition-all duration-200 shadow-xl hover:shadow-2xl flex items-center justify-center gap-2"
+              className="brutal-button group flex items-center justify-center gap-2"
             >
               Start Your Health Assessment
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,7 +58,8 @@ export function Hero() {
             
             <Link 
               href="#how-it-works"
-              className="px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-semibold text-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 shadow-md hover:shadow-lg"
+              className="px-8 py-3 bg-white border-2 border-black rounded-lg font-bold hover:bg-neutral-50 transition-all"
+              style={{ boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)' }}
             >
               See How It Works
             </Link>
@@ -69,38 +70,38 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-8 text-gray-600"
+            className="flex flex-wrap justify-center gap-8 text-neutral-600"
           >
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center border-2 border-black">
+                <svg className="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
               <div className="text-left">
-                <div className="font-semibold text-gray-900">Licensed Physicians</div>
+                <div className="font-bold text-neutral-900">Licensed Physicians</div>
                 <div className="text-sm">Board-certified providers</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center border-2 border-black">
+                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div className="text-left">
-                <div className="font-semibold text-gray-900">HSA/FSA Eligible</div>
+                <div className="font-bold text-neutral-900">HSA/FSA Eligible</div>
                 <div className="text-sm">Use pre-tax dollars</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center border-2 border-black">
+                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
               <div className="text-left">
-                <div className="font-semibold text-gray-900">Discreet Shipping</div>
+                <div className="font-bold text-neutral-900">Discreet Shipping</div>
                 <div className="text-sm">Private & confidential</div>
               </div>
             </div>
@@ -114,20 +115,20 @@ export function Hero() {
             className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
           >
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600">10,000+</div>
-              <div className="text-gray-600 mt-2">Happy Patients</div>
+              <div className="text-4xl font-bold gradient-text">10,000+</div>
+              <div className="text-neutral-600 mt-2">Happy Patients</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600">4.9/5</div>
-              <div className="text-gray-600 mt-2">Average Rating</div>
+              <div className="text-4xl font-bold gradient-text">4.9/5</div>
+              <div className="text-neutral-600 mt-2">Average Rating</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600">47</div>
-              <div className="text-gray-600 mt-2">States Served</div>
+              <div className="text-4xl font-bold gradient-text">47</div>
+              <div className="text-neutral-600 mt-2">States Served</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600">24hr</div>
-              <div className="text-gray-600 mt-2">Provider Response</div>
+              <div className="text-4xl font-bold gradient-text">24hr</div>
+              <div className="text-neutral-600 mt-2">Provider Response</div>
             </div>
           </motion.div>
         </motion.div>
@@ -141,7 +142,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
         <div className="animate-bounce">
-          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
