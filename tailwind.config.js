@@ -8,112 +8,34 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Primary - Medical green with trust
-        primary: {
-          50: '#e6f7f1',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981', // Emerald green
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
-        },
-        // Accent - Warm coral for CTAs
-        accent: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#fb7185', // Coral pink
-          600: '#f43f5e',
-          700: '#e11d48',
-          800: '#be123c',
-          900: '#881337',
-        },
-        // Neutral - Warmer grays
-        gray: {
-          50: '#fafaf9',
-          100: '#f5f5f4',
-          200: '#e7e5e4',
-          300: '#d6d3d1',
-          400: '#a8a29e',
-          500: '#78716c',
-          600: '#57534e',
-          700: '#44403c',
-          800: '#292524',
-          900: '#1c1917',
-        },
-        // Semantic colors
-        success: '#22c55e',
-        warning: '#f59e0b',
-        error: '#ef4444',
-        info: '#3b82f6',
-        // Surface colors for layering
-        surface: {
-          elevated: '#ffffff',
-          base: '#fafaf9',
-          depressed: '#f5f5f4',
-        }
+      primary: {
+        50: 'var(--primary-50)',
+        100: 'var(--primary-100)',
+        200: 'var(--primary-200)',
+        400: 'var(--primary-400)',
+        500: 'var(--primary-500)',
+        600: 'var(--primary-600)',
+        700: 'var(--primary-700)',
       },
-      fontFamily: {
-        heading: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+      accent: {
+        500: 'var(--accent-500)',
+        600: 'var(--accent-600)',
+      },
+      surface: {
+        elevated: 'var(--surface-elevated)',
+        base: 'var(--surface-base)',
+        depressed: 'var(--surface-depressed)',
+      }
+    },
+    fontFamily: {
+        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
         body: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
-        'slide-down': 'slideDown 0.5s ease-out',
-        'scale-in': 'scaleIn 0.3s ease-out',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'medical-pulse': 'medical-pulse 2s ease-in-out infinite',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        slideDown: {
-          '0%': { transform: 'translateY(-20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        scaleIn: {
-          '0%': { transform: 'scale(0.9)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
-        },
-        glow: {
-          'from': { boxShadow: '0 0 10px rgba(16, 185, 129, 0.3)' },
-          'to': { boxShadow: '0 0 30px rgba(16, 185, 129, 0.6)' },
-        },
-        'medical-pulse': {
-          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(1.05)', opacity: '0.9' },
-        },
-      },
-      boxShadow: {
-        'glow': '0 0 20px rgba(16, 185, 129, 0.3)',
-        'glow-lg': '0 0 40px rgba(16, 185, 129, 0.4)',
-        'brutal': '4px 4px 0px rgba(0,0,0,1)',
-        'brutal-hover': '6px 6px 0px rgba(0,0,0,1)',
-        'brutal-active': '2px 2px 0px rgba(0,0,0,1)',
-      },
-      backdropBlur: {
-        xs: '2px',
+        'bounce-slow': 'bounce 3s infinite',
       },
     },
   },
-  plugins: [],
 }
