@@ -22,24 +22,6 @@ export default function RootLayout({
         {/* EMERGENCY FIX: Load Tailwind from CDN */}
         <script src="https://cdn.tailwindcss.com"></script>
         
-        {/* Set base font size to ensure proper scaling */}
-        <style>{`
-          html {
-            font-size: 16px;
-          }
-          body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-          }
-          /* Ensure emojis don't appear huge */
-          .emoji {
-            font-size: 1.5rem;
-            line-height: 1;
-          }
-        `}</style>
-        
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
