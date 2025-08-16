@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -16,10 +18,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="/portal" className="hover:text-white transition-colors">Patient Portal</a></li>
-              <li><a href="/intake" className="hover:text-white transition-colors">Schedule Consultation</a></li>
-              <li><a href="/labs" className="hover:text-white transition-colors">Lab Results</a></li>
-              <li><a href="/journal" className="hover:text-white transition-colors">Health Journal</a></li>
+              <li><Link href="/portal" className="hover:text-white transition-colors">Patient Portal</Link></li>
+              <li><Link href="/intake" className="hover:text-white transition-colors">Schedule Consultation</Link></li>
+              <li><Link href="/labs" className="hover:text-white transition-colors">Lab Testing</Link></li>
+              <li><Link href="/journal" className="hover:text-white transition-colors">Health Journal</Link></li>
             </ul>
           </div>
 
@@ -27,10 +29,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="/faq" className="hover:text-white transition-colors">FAQs</a></li>
-              <li><a href="/shipping" className="hover:text-white transition-colors">Shipping & Returns</a></li>
-              <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><Link href="/faq" className="hover:text-white transition-colors">FAQs</Link></li>
+              <li><Link href="/shipping" className="hover:text-white transition-colors">Shipping & Returns</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
 
@@ -38,8 +40,16 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-gray-400">
-              <li>support@[clinic].com</li>
-              <li>1-800-XXX-XXXX</li>
+              <li>
+                <a href="mailto:support@clinic.com" className="hover:text-white transition-colors">
+                  support@clinic.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:1-800-XXX-XXXX" className="hover:text-white transition-colors">
+                  1-800-XXX-XXXX
+                </a>
+              </li>
               <li>Mon-Fri 8am-8pm EST</li>
               <li>Sat-Sun 9am-5pm EST</li>
             </ul>
