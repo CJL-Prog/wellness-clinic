@@ -1,6 +1,5 @@
-import type { Config } from 'tailwindcss';
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,35 +9,27 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          50: '#E8F2FF',
-          100: '#C3DAFE',
-          200: '#9EBFFD',
-          300: '#7AA3FC',
-          400: '#5588FA',
-          500: '#4A90E2',
-          600: '#2C5282',
-          700: '#1E3A5F',
-          800: '#10223C',
-          900: '#020A19',
+          50: '#e6f7f1',
+          100: '#c0f0dd',
+          200: '#96e8c8',
+          300: '#6ce0b3',
+          400: '#4dd9a3',
+          500: '#2dd193',
+          600: '#28cc8b',
+          700: '#22c480',
+          800: '#1cbd76',
+          900: '#11b064',
         },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
   plugins: [],
-};
-
-export default config;
+}
