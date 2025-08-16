@@ -1,11 +1,14 @@
-﻿import './globals.css';
+import './globals.css';
 import { Outfit, Plus_Jakarta_Sans } from 'next/font/google';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { TrustBar } from '@/components/TrustBar';
 import { MobileNav } from '@/components/MobileNav';
+import { LiveChat } from '@/components/LiveChat';
 import Script from 'next/script';
 import type { Metadata } from 'next';
+import { StickyCTA } from '@/components/StickyCTA';
+import { SocialProof } from '@/components/SocialProof';
 
 // Configure Outfit font for headings
 const outfit = Outfit({ 
@@ -283,7 +286,7 @@ export default function RootLayout({
         <Navigation />
         
         {/* Trust Bar - scrolling trust indicators */}
-        <TrustBar />
+        {/*<TrustBar />*/}
         
         {/* Main Content */}
         <main id="main-content" className="min-h-screen">
@@ -296,14 +299,23 @@ export default function RootLayout({
         {/* Mobile Navigation */}
         <MobileNav />
         
-        {/* Live Chat Widget (optional) */}
-        {process.env.NEXT_PUBLIC_ENABLE_CHAT === 'true' && (
+        {/* Sticky CTA */}
+        <StickyCTA />
+        
+        {/* Social Proof */}
+        <SocialProof />
+        
+        {/* Custom Live Chat Component */}
+        <LiveChat />
+        
+        {/* Third-party Live Chat Widget (optional - for Intercom, Drift, etc.) */}
+        {process.env.NEXT_PUBLIC_ENABLE_THIRD_PARTY_CHAT === 'true' && (
           <Script
             id="chat-widget"
             strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
-                // Add your chat widget code here (Intercom, Drift, etc.)
+                // Add your third-party chat widget code here (Intercom, Drift, etc.)
               `,
             }}
           />
