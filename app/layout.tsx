@@ -1,10 +1,22 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Outfit, Plus_Jakarta_Sans } from 'next/font/google';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { TrustBar } from '@/components/TrustBar';
+import { MobileNav } from '@/components/MobileNav';
 import Script from 'next/script';
 
-const inter = Inter({ subsets: ['latin'] });
+const outfit = Outfit({ 
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
+
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'HealthClinic - Personalized Health Solutions',
@@ -17,11 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${outfit.variable} ${jakarta.variable}`}>
       <head>
-        {/* EMERGENCY FIX: Load Tailwind from CDN */}
-        <script src="https://cdn.tailwindcss.com"></script>
-        
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
@@ -40,12 +49,14 @@ export default function RootLayout({
           </>
         )}
       </head>
-      <body className={`${inter.className} min-h-screen bg-white text-gray-900`}>
+      <body className="font-body min-h-screen bg-white text-neutral-900">
         <Navigation />
+        <TrustBar />
         <main className="min-h-screen">
           {children}
         </main>
         <Footer />
+        <MobileNav />
       </body>
     </html>
   );
