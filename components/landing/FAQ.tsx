@@ -41,7 +41,7 @@ export function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-neutral-50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0 }}
@@ -50,7 +50,7 @@ export function FAQ() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-          <p className="text-xl text-gray-600">Everything you need to know</p>
+          <p className="text-xl text-neutral-600">Everything you need to know</p>
         </motion.div>
 
         <div className="max-w-3xl mx-auto">
@@ -65,14 +65,14 @@ export function FAQ() {
             >
               <button
                 onClick={() => setActiveIndex(activeIndex === index ? null : index)}
-                className="w-full bg-white rounded-lg px-6 py-4 text-left hover:shadow-md transition-shadow"
+                className="w-full brutal-card bg-white text-left hover:transform hover:-translate-y-1 transition-all"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-lg">{faq.question}</h3>
+                  <h3 className="font-bold text-lg">{faq.question}</h3>
                   <motion.svg
                     animate={{ rotate: activeIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="w-5 h-5 text-gray-500"
+                    className="w-5 h-5 text-neutral-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -91,8 +91,8 @@ export function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 py-4 bg-white border-t">
-                      <p className="text-gray-600">{faq.answer}</p>
+                    <div className="px-6 py-4 bg-white border-x-2 border-b-2 border-black rounded-b-lg -mt-2">
+                      <p className="text-neutral-600">{faq.answer}</p>
                     </div>
                   </motion.div>
                 )}
@@ -102,10 +102,10 @@ export function FAQ() {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">Still have questions?</p>
+          <p className="text-neutral-600 mb-4">Still have questions?</p>
           <a 
             href="mailto:support@clinic.com" 
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+            className="inline-flex items-center gap-2 gradient-text font-bold hover:underline"
           >
             Contact our support team
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

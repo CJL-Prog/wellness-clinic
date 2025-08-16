@@ -16,15 +16,6 @@ export default function ProviderDashboard() {
   }, []);
 
   const loadAssessments = async () => {
-    const supabase = createClientComponentClient();
-    // This would fetch from your API
-    // const { data } = await supabase
-    //   .from('assessments')
-    //   .select('*')
-    //   .eq('status', 'paid_awaiting_review')
-    //   .order('created_at', { ascending: false });
-    
-    // For now, using mock data
     setAssessments([
       {
         id: '1',
@@ -37,9 +28,9 @@ export default function ProviderDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow-lg border-b-2 border-black">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Provider Dashboard</h1>
           <button
@@ -47,7 +38,7 @@ export default function ProviderDashboard() {
               const supabase = createClientComponentClient();
               supabase.auth.signOut();
             }}
-            className="text-gray-600 hover:text-gray-900"
+            className="px-4 py-2 bg-white border-2 border-black rounded-lg font-bold hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Sign Out
           </button>
@@ -57,26 +48,26 @@ export default function ProviderDashboard() {
       <div className="max-w-7xl mx-auto p-6">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-gray-600 text-sm">Pending Reviews</h3>
+          <div className="brutal-card p-6">
+            <h3 className="text-gray-600 text-sm font-bold">Pending Reviews</h3>
             <p className="text-3xl font-bold text-orange-600">{stats.pending}</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-gray-600 text-sm">Approved Today</h3>
-            <p className="text-3xl font-bold text-green-600">{stats.approved}</p>
+          <div className="brutal-card p-6">
+            <h3 className="text-gray-600 text-sm font-bold">Approved Today</h3>
+            <p className="text-3xl font-bold text-emerald-600">{stats.approved}</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-gray-600 text-sm">Monthly Revenue</h3>
+          <div className="brutal-card p-6">
+            <h3 className="text-gray-600 text-sm font-bold">Monthly Revenue</h3>
             <p className="text-3xl font-bold">${stats.revenue.toLocaleString()}</p>
           </div>
         </div>
 
         {/* Pending Assessments */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b">
+        <div className="brutal-card">
+          <div className="p-6 border-b-2 border-black">
             <h2 className="text-xl font-bold">Assessments Awaiting Review</h2>
           </div>
-          <div className="divide-y">
+          <div className="divide-y-2 divide-black">
             {assessments.length === 0 ? (
               <div className="p-6 text-center text-gray-500">
                 No pending assessments
@@ -86,7 +77,7 @@ export default function ProviderDashboard() {
                 <div key={assessment.id} className="p-6 hover:bg-gray-50">
                   <div className="flex justify-between items-start">
                     <div>
-                      <p className="font-medium">{assessment.user_email}</p>
+                      <p className="font-bold">{assessment.user_email}</p>
                       <p className="text-sm text-gray-600">
                         Goals: {assessment.goals.join(', ')}
                       </p>
@@ -96,7 +87,7 @@ export default function ProviderDashboard() {
                     </div>
                     <Link
                       href={`/provider/review/${assessment.id}`}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                      className="brutal-button"
                     >
                       Review
                     </Link>
@@ -109,13 +100,13 @@ export default function ProviderDashboard() {
 
         {/* Quick Actions */}
         <div className="mt-8 grid grid-cols-3 gap-4">
-          <button className="p-4 bg-white rounded-lg shadow text-center hover:shadow-lg">
+          <button className="brutal-card p-4 text-center hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
             📊 Analytics
           </button>
-          <button className="p-4 bg-white rounded-lg shadow text-center hover:shadow-lg">
+          <button className="brutal-card p-4 text-center hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
             💊 Prescriptions
           </button>
-          <button className="p-4 bg-white rounded-lg shadow text-center hover:shadow-lg">
+          <button className="brutal-card p-4 text-center hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
             📅 Schedule
           </button>
         </div>

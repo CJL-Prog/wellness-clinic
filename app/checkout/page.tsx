@@ -10,9 +10,9 @@ function CheckoutContent() {
 
   if (canceled) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white pt-24 pb-12">
         <div className="max-w-md mx-auto px-6">
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="brutal-card p-8 text-center">
             <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -24,7 +24,7 @@ function CheckoutContent() {
             </p>
             <Link
               href="/intake"
-              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+              className="inline-block brutal-button"
             >
               Return to Assessment
             </Link>
@@ -35,13 +35,13 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white pt-24 pb-12">
       <div className="max-w-4xl mx-auto px-6">
         <h1 className="text-3xl font-bold mb-8">Checkout</h1>
         
         <div className="grid md:grid-cols-3 gap-8">
           {/* Order Summary */}
-          <div className="md:col-span-2 bg-white rounded-lg shadow p-6">
+          <div className="md:col-span-2 brutal-card p-6">
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
             
             <div className="border-b pb-4 mb-4">
@@ -63,15 +63,15 @@ function CheckoutContent() {
               </ul>
             </div>
             
-            <div className="bg-blue-50 rounded-lg p-4">
-              <p className="text-sm text-blue-800">
+            <div className="bg-emerald-50 rounded-lg p-4 border-2 border-emerald-500">
+              <p className="text-sm text-emerald-800">
                 <strong>Note:</strong> After physician review, if your treatment is not approved, you will receive a full refund.
               </p>
             </div>
           </div>
           
           {/* Payment Form */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="brutal-card p-6">
             <h2 className="text-xl font-bold mb-4">Payment</h2>
             
             <div className="mb-4">
@@ -84,17 +84,16 @@ function CheckoutContent() {
             
             <button
               onClick={() => {
-                // This would integrate with Stripe
                 alert('Stripe checkout would open here');
               }}
-              className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors mb-3"
+              className="w-full brutal-button mb-3"
             >
               Pay with Card
             </button>
             
             <div className="text-center text-sm text-gray-600">
               <p className="mb-2">or pay with</p>
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+              <button className="px-4 py-2 bg-white border-2 border-black rounded-lg font-bold hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
                 HSA/FSA Card
               </button>
             </div>
@@ -109,16 +108,6 @@ function CheckoutContent() {
             </div>
           </div>
         </div>
-        
-        {/* Terms */}
-        <div className="mt-8 text-center text-sm text-gray-600">
-          <p>
-            By completing this purchase, you agree to our{' '}
-            <Link href="/terms" className="text-blue-600 hover:underline">Terms of Service</Link>
-            {' '}and{' '}
-            <Link href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link>
-          </p>
-        </div>
       </div>
     </div>
   );
@@ -127,7 +116,7 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white pt-24 pb-12">
         <div className="max-w-4xl mx-auto px-6">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>

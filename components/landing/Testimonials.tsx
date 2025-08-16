@@ -1,6 +1,5 @@
 'use client';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
 const testimonials = [
   {
@@ -26,36 +25,10 @@ const testimonials = [
     text: 'HRT has given me my life back at 52. Better sleep, stable mood, and my relationship has never been better. Wish I had started sooner!',
     age: 52,
     results: 'Life-changing'
-  },
-  {
-    name: 'David L.',
-    program: 'Comprehensive Plan',
-    rating: 5,
-    text: 'The lab testing revealed issues my regular doctor never caught. The personalized treatment plan addresses everything. Worth every penny.',
-    age: 45,
-    results: 'Complete transformation'
-  },
-  {
-    name: 'Amanda T.',
-    program: 'Sleep & Recovery',
-    rating: 5,
-    text: 'As an athlete, recovery is everything. The peptide protocols cut my recovery time in half. I feel stronger and younger than I have in years.',
-    age: 35,
-    results: 'Recovery time -50%'
-  },
-  {
-    name: 'Robert H.',
-    program: 'Elite Membership',
-    rating: 5,
-    text: 'The concierge service and weekly check-ins keep me accountable. Down 30 pounds and my testosterone levels are optimal. Game changer.',
-    age: 48,
-    results: '30 lbs lost + optimized hormones'
   }
 ];
 
 export function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6">
@@ -66,18 +39,18 @@ export function Testimonials() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4">Success Stories</h2>
-          <p className="text-xl text-gray-600">Real results from real patients</p>
+          <p className="text-xl text-neutral-600">Real results from real patients</p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {testimonials.slice(0, 3).map((testimonial, index) => (
+          {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow"
+              className="glass-card rounded-2xl p-6"
             >
               <div className="flex mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
@@ -87,15 +60,15 @@ export function Testimonials() {
                 ))}
               </div>
               
-              <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
+              <p className="text-neutral-700 mb-4 italic">"{testimonial.text}"</p>
               
-              <div className="border-t pt-4">
+              <div className="border-t border-neutral-200 pt-4">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm text-gray-600">{testimonial.program}</p>
+                    <p className="font-bold">{testimonial.name}</p>
+                    <p className="text-sm text-neutral-600">{testimonial.program}</p>
                   </div>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-bold">
                     {testimonial.results}
                   </span>
                 </div>
@@ -105,21 +78,21 @@ export function Testimonials() {
         </div>
 
         {/* Trust indicators */}
-        <div className="mt-12 flex flex-wrap justify-center gap-8 text-gray-600">
+        <div className="mt-12 flex flex-wrap justify-center gap-8 text-neutral-600">
           <div className="text-center">
-            <p className="text-3xl font-bold text-blue-600">4,500+</p>
+            <p className="text-3xl font-bold gradient-text">4,500+</p>
             <p className="text-sm">Happy Patients</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-blue-600">4.9/5</p>
+            <p className="text-3xl font-bold gradient-text">4.9/5</p>
             <p className="text-sm">Average Rating</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-blue-600">47</p>
+            <p className="text-3xl font-bold gradient-text">47</p>
             <p className="text-sm">States Served</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-blue-600">24hr</p>
+            <p className="text-3xl font-bold gradient-text">24hr</p>
             <p className="text-sm">Provider Response</p>
           </div>
         </div>
